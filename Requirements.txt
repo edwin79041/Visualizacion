@@ -1,0 +1,17 @@
+numpy
+pandas
+matplotlib.pyplot
+seaborn
+pandas
+matplotlib.pyplot
+plotly.graph_objects
+from plotly.subplots make_subplots
+from ipywidgets interact
+ipywidgets
+dash_core_components
+dash_html_components
+plotly.express
+dash
+dash.dependencies
+sklearn.metrics
+scipy stats
