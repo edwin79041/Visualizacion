@@ -9,6 +9,4 @@ dash_html_components
 dash
 sklearn
 scipy
-matplotlib
 prince
-warnings
