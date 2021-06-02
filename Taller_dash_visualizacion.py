@@ -40,7 +40,7 @@ import sklearn.metrics       as Metrics
 from scipy import stats
 
 #warnings.simplefilter("ignore")
-get_ipython().run_line_magic('matplotlib', 'inline')
+#get_ipython().run_line_magic('matplotlib', 'inline')
 sns.set()
 
 
