@@ -40,7 +40,7 @@ import sklearn.metrics       as Metrics
 from scipy import stats
 
 #warnings.simplefilter("ignore")
-get_ipython().run_line_magic('matplotlib', 'inline')
+#get_ipython().run_line_magic('matplotlib', 'inline')
 sns.set()
 
 
@@ -276,7 +276,7 @@ from scipy import cluster
 from scipy.stats import f_oneway
 from scipy.stats import chi2_contingency
 from scipy.stats import kruskal
-get_ipython().system('pip install prince')
+#get_ipython().system('pip install prince')
 import prince
 import warnings
 warnings.simplefilter("ignore")
@@ -801,7 +801,7 @@ def actualiza(input_value):
     fig2.update_layout(height = 500)
     return fig2
 
-app.run_server(debug=True,mode="inline",port=8055)
+app.run_server(debug=True,host="0.0.0.0",port=8050)
 
 
 # In[99]:
@@ -892,7 +892,7 @@ def actualiza(input_value):
     return fig2
 
 
-app.run_server(debug=True,mode="inline",port=8056)
+app.run_server(debug=True,host="0.0.0.0",port=8051)
 
 
 # In[84]:
@@ -1073,5 +1073,5 @@ def tablakpi(input_value):
     return fig5
 
 
-app.run_server(debug=True,mode="inline",port=8060)
+app.run_server(debug=True,host="0.0.0.0",port=8888)
 
