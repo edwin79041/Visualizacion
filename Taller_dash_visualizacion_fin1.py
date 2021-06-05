@@ -40,7 +40,7 @@ import sklearn.metrics       as Metrics
 from scipy import stats
 
 #warnings.simplefilter("ignore")
-get_ipython().run_line_magic('matplotlib', 'inline')
+#get_ipython().run_line_magic('matplotlib', 'inline')
 sns.set()
 
 
@@ -276,7 +276,7 @@ from scipy import cluster
 from scipy.stats import f_oneway
 from scipy.stats import chi2_contingency
 from scipy.stats import kruskal
-get_ipython().system('pip install prince')
+#get_ipython().system('pip install prince')
 import prince
 import warnings
 warnings.simplefilter("ignore")
@@ -726,87 +726,6 @@ deps.show()
 # In[101]:
 
 
-# fig2=sns.relplot(x="Valor del Contrato", y="conteo", hue='Sector', data=agrupa_sector , size=15).set(title='Relación valor y cantidad de contratos')
-app = JupyterDash(__name__,external_stylesheets=['https://bootswatch.com/5/simplex/bootstrap.css'])
-#external_stylesheets = ['https://codepen.io/chriddyp/pen/bWLwgP.css']
-
-#app = JupyterDash(__name__,external_stylesheets=external_stylesheets)
-app.layout = html.Div([
-    html.H1("Exploracion de datos contratos en Colombia"),
-    html.Div([
-        html.H6("Contratación en colombia por Departamentos"),
-        html.P("A continuación se puede encontrar el listado de departamentos de Colombia, el vólumen de contratos y el valor acumulado:"),
-        dcc.Dropdown(
-                    id='my-input',
-                    options=[{'label': i, 'value': i} for i in depar],
-                    value='Amazonas'),
-    ],style={"width": "100%",
-                  "height": "50%",
-                  "justify-content": "center"}),
-    html.Div([
-        dcc.Graph(id='Grafica_dep'),
-        dcc.Graph(id='my-output'),],
-        style={"width": "100%",
-                  "justify-content": "center"}),
-    html.P("Los departamentos con mayor inversión en contratos son Bogóta, Caldas y Cordoba, sin embargo existen valores de contratos atípicos como Risaralda, Huila, Antioquia y Santander."), 
-    html.P("Los departamentos con menor inversión en contratos son Amazonas, Vichada, San Andres y Guaviare, comunidades que requieren mas inversión en educación, salud y seguridad para su desarrollo."),
-    html.Div([
-        #html.H6("Segundo titulo"),
-         dcc.Graph(figure=deps),
-#          dcc.Graph(figure=plt)
-         dcc.Graph(figure=sector_resum)
-     ],
-    
-        style={ "height": "calc(90% - 10px)"
-              }),
-    html.P("Los sectores con mayor inversión en contratos son Servicio Publico, Hacienda y crédito publico e Inclusión sociales y reconciliación."),
-    html.P("Los sectores con menor inversión en contratos son Trabajo, Ciencia y Tecnología, Justicia."),
-            html.A(html.Button('Modelo'),
-    href='http://127.0.0.1:8056/'),
-        ])
-@app.callback(
-    Output(component_id='my-output', component_property='figure'),
-    [Input(component_id='my-input', component_property='value')]
-)
-
-def figura(i):
-    fig=0
-    Freq=tabla_f[tabla_f['Departamento']==i]
-    fig = go.Figure(data=[go.Table(
-                columnwidth = [100,50,50],
-                header=dict(values=['Sector','Valor del Contrato','Contratos'],
-                            fill_color='paleturquoise',
-                            align='center'),
-                cells=dict(values=[Freq['Sector'],Freq['($) millions'],Freq['conteo']],
-                           fill_color='lavender',
-                           align='center'))
-                                 ])
-    fig.update_layout(height = 230)
-    
-
-    return fig
-@app.callback(
-    Output(component_id='Grafica_dep', component_property='figure'),
-    [Input(component_id='my-input', component_property='value')]
-)
-           
-def actualiza(input_value):
-    fig2 = 0
-    Freq=tabla_f[tabla_f['Departamento']==input_value]
-    fig2 = make_subplots(rows=1, cols=2)
-    fig2.add_trace(go.Bar(x=Freq['Sector'], y=Freq['Valor del Contrato'], name = 'Valor de Contratos'), row=1, col=1)
-    fig2.add_trace(go.Bar(x=Freq['Sector'], y=Freq['conteo'], name = 'Cantidad de Contratos'), row=1, col=2)
-    fig2.update_layout(title_text="",
-                      title_font_size=30,title_x=0.5)
-    fig2.update_layout(height = 500)
-    return fig2
-
-app.run_server(debug=True,mode="inline",port=8060)
-
-
-# In[102]:
-
-
 app = JupyterDash(__name__,external_stylesheets=['https://bootswatch.com/5/simplex/bootstrap.css'])
 #app = JupyterDash(__name__,external_stylesheets=external_stylesheets)
 
@@ -892,7 +811,7 @@ def actualiza(input_value):
     return fig2
 
 
-app.run_server(debug=True,mode="inline",port=8056)
+app.run_server(debug=True,host="0.0.0.0",port=8051)
 
 
 # In[81]:
