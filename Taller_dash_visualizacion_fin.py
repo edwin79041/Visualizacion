@@ -1073,7 +1073,7 @@ def tablakpi(input_value):
     return fig5
 
 
-app.run_server(debug=True,host="0.0.0.0",port=8888)
+app.run_server(debug=True,host="0.0.0.0",port=8088)
 
 
 # In[ ]:
