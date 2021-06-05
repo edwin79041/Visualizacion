@@ -40,7 +40,7 @@ import sklearn.metrics       as Metrics
 from scipy import stats
 
 #warnings.simplefilter("ignore")
-get_ipython().run_line_magic('matplotlib', 'inline')
+#get_ipython().run_line_magic('matplotlib', 'inline')
 sns.set()
 
 
@@ -276,7 +276,7 @@ from scipy import cluster
 from scipy.stats import f_oneway
 from scipy.stats import chi2_contingency
 from scipy.stats import kruskal
-get_ipython().system('pip install prince')
+#get_ipython().system('pip install prince')
 import prince
 import warnings
 warnings.simplefilter("ignore")
@@ -762,7 +762,7 @@ app.layout = html.Div([
     html.P("Los sectores con mayor inversión en contratos son Servicio Publico, Hacienda y crédito publico e Inclusión sociales y reconciliación."),
     html.P("Los sectores con menor inversión en contratos son Trabajo, Ciencia y Tecnología, Justicia."),
             html.A(html.Button('Modelo'),
-    href='http://127.0.0.1:8056/'),
+    href='http://"0.0.0.0":8051/'),
         ])
 @app.callback(
     Output(component_id='my-output', component_property='figure'),
@@ -801,7 +801,7 @@ def actualiza(input_value):
     fig2.update_layout(height = 500)
     return fig2
 
-app.run_server(debug=True,mode="inline",port=8060)
+app.run_server(debug=True,host="0.0.0.0",port=8050)
 
 
 # In[102]:
@@ -848,9 +848,9 @@ app.layout = html.Div(children=[
                     value=0),
                     dcc.Graph(id='grupos'),
                             html.A(html.Button('Exploración'),
-    href='http://127.0.0.1:8060/'),
+    href='http://"0.0.0.0":8050//'),
         html.A(html.Button('Kpis'),
-    href='http://127.0.0.1:8061/'),
+    href='http://"0.0.0.0":8888/'),
                     
                 ],
                 
@@ -892,7 +892,7 @@ def actualiza(input_value):
     return fig2
 
 
-app.run_server(debug=True,mode="inline",port=8056)
+app.run_server(debug=True,host="0.0.0.0",port=8051)
 
 
 # In[81]:
@@ -1016,9 +1016,9 @@ app.layout = html.Div(children=[
                     html.P("3. Valor percapita de contratos: Valor total de contratos / Población del Departamento"),
                     dcc.Graph(id='tabla'),       ###gráfica 1
                     html.A(html.Button('Exploración'),
-    href='http://127.0.0.1:8060/'),
+    href='http://"0.0.0.0":8050/'),
         html.A(html.Button('Modelo'),
-    href='http://127.0.0.1:8056/'),
+    href='http://"0.0.0.0":8051/'),
        
                 ],
                 style={
@@ -1073,7 +1073,7 @@ def tablakpi(input_value):
     return fig5
 
 
-app.run_server(debug=True,mode="inline",port=8061)
+app.run_server(debug=True,host="0.0.0.0",port=8888)
 
 
 # In[ ]:
