@@ -40,7 +40,7 @@ import sklearn.metrics       as Metrics
 from scipy import stats
 
 #warnings.simplefilter("ignore")
-get_ipython().run_line_magic('matplotlib', 'inline')
+#get_ipython().run_line_magic('matplotlib', 'inline')
 sns.set()
 
 
@@ -276,7 +276,7 @@ from scipy import cluster
 from scipy.stats import f_oneway
 from scipy.stats import chi2_contingency
 from scipy.stats import kruskal
-get_ipython().system('pip install prince')
+#get_ipython().system('pip install prince')
 import prince
 import warnings
 warnings.simplefilter("ignore")
@@ -723,178 +723,6 @@ deps = go.Figure(
 deps.show()
 
 
-# In[101]:
-
-
-# fig2=sns.relplot(x="Valor del Contrato", y="conteo", hue='Sector', data=agrupa_sector , size=15).set(title='Relación valor y cantidad de contratos')
-app = JupyterDash(__name__,external_stylesheets=['https://bootswatch.com/5/simplex/bootstrap.css'])
-#external_stylesheets = ['https://codepen.io/chriddyp/pen/bWLwgP.css']
-
-#app = JupyterDash(__name__,external_stylesheets=external_stylesheets)
-app.layout = html.Div([
-    html.H1("Exploracion de datos contratos en Colombia"),
-    html.Div([
-        html.H6("Contratación en colombia por Departamentos"),
-        html.P("A continuación se puede encontrar el listado de departamentos de Colombia, el vólumen de contratos y el valor acumulado:"),
-        dcc.Dropdown(
-                    id='my-input',
-                    options=[{'label': i, 'value': i} for i in depar],
-                    value='Amazonas'),
-    ],style={"width": "100%",
-                  "height": "50%",
-                  "justify-content": "center"}),
-    html.Div([
-        dcc.Graph(id='Grafica_dep'),
-        dcc.Graph(id='my-output'),],
-        style={"width": "100%",
-                  "justify-content": "center"}),
-    html.P("Los departamentos con mayor inversión en contratos son Bogóta, Caldas y Cordoba, sin embargo existen valores de contratos atípicos como Risaralda, Huila, Antioquia y Santander."), 
-    html.P("Los departamentos con menor inversión en contratos son Amazonas, Vichada, San Andres y Guaviare, comunidades que requieren mas inversión en educación, salud y seguridad para su desarrollo."),
-    html.Div([
-        #html.H6("Segundo titulo"),
-         dcc.Graph(figure=deps),
-#          dcc.Graph(figure=plt)
-         dcc.Graph(figure=sector_resum)
-     ],
-    
-        style={ "height": "calc(90% - 10px)"
-              }),
-    html.P("Los sectores con mayor inversión en contratos son Servicio Publico, Hacienda y crédito publico e Inclusión sociales y reconciliación."),
-    html.P("Los sectores con menor inversión en contratos son Trabajo, Ciencia y Tecnología, Justicia."),
-            html.A(html.Button('Modelo'),
-    href='http://127.0.0.1:8056/'),
-        ])
-@app.callback(
-    Output(component_id='my-output', component_property='figure'),
-    [Input(component_id='my-input', component_property='value')]
-)
-
-def figura(i):
-    fig=0
-    Freq=tabla_f[tabla_f['Departamento']==i]
-    fig = go.Figure(data=[go.Table(
-                columnwidth = [100,50,50],
-                header=dict(values=['Sector','Valor del Contrato','Contratos'],
-                            fill_color='paleturquoise',
-                            align='center'),
-                cells=dict(values=[Freq['Sector'],Freq['($) millions'],Freq['conteo']],
-                           fill_color='lavender',
-                           align='center'))
-                                 ])
-    fig.update_layout(height = 230)
-    
-
-    return fig
-@app.callback(
-    Output(component_id='Grafica_dep', component_property='figure'),
-    [Input(component_id='my-input', component_property='value')]
-)
-           
-def actualiza(input_value):
-    fig2 = 0
-    Freq=tabla_f[tabla_f['Departamento']==input_value]
-    fig2 = make_subplots(rows=1, cols=2)
-    fig2.add_trace(go.Bar(x=Freq['Sector'], y=Freq['Valor del Contrato'], name = 'Valor de Contratos'), row=1, col=1)
-    fig2.add_trace(go.Bar(x=Freq['Sector'], y=Freq['conteo'], name = 'Cantidad de Contratos'), row=1, col=2)
-    fig2.update_layout(title_text="",
-                      title_font_size=30,title_x=0.5)
-    fig2.update_layout(height = 500)
-    return fig2
-
-app.run_server(debug=True,mode="inline",port=8060)
-
-
-# In[102]:
-
-
-app = JupyterDash(__name__,external_stylesheets=['https://bootswatch.com/5/simplex/bootstrap.css'])
-#app = JupyterDash(__name__,external_stylesheets=external_stylesheets)
-
-grupo = list(tabla_f['grupo2'].unique())
-
-
-app.layout = html.Div(children=[
-    html.Div(
-        children=[
-            html.Div(
-                children=[html.H1("Resultado Cluster modelo K-means", style={"font-size": "30px"})], 
-                
-                style={
-                  "display": "flex",
-                  "justify-content": "center",
-                  "height": "10%"
-                })
-        ],
-    ),
-    html.Div(
-        children=[
-            html.Div(
-                children=[
-                    html.P("Para la aplicación del modelo K-means se tuvieron en cuenta las siguientes variables: Departamento, Sector, Valor del Contrato, cantidad contratos, población."),                    
-                    html.P("Por medio de la tecnica PCA se agrupan las caracteristicas mencionadas y se reducen los datos para el análisis, la cantidad resultante representa los datos originales."),                    
-                    dcc.Graph(figure=fig_table),       ###gráfica 1
-                    
-                    html.Hr(),
-                    
-                    html.H2("Detalle de Grupos por departamento"),
-                    html.P("El grupo 2 es el predominante que agrupa  la mayoria de contratos por departamento, mientras que el en el grupo 0 estan los departamento de Anquioquia , Bogota y Risaralda los cuales tienen una mayor cantidad de contratos"),
-                    dcc.Graph(figure=Depart_modelo), 
-                    html.P("El grupo 2 es el predominante que agrupa  la mayoria de contratos por Sector donde se destacan Servicio Publico, Educación y Salud."),                    
-                    dcc.Graph(figure=Sector),   ###gráfica 2
-                    
-                    dcc.Dropdown(
-                    id='my-input',
-                    options=[{'label': i, 'value': i} for i in grupo],
-                    value=0),
-                    dcc.Graph(id='grupos'),
-                            html.A(html.Button('Exploración'),
-    href='http://127.0.0.1:8060/'),
-        html.A(html.Button('Kpis'),
-    href='http://127.0.0.1:8061/'),
-                    
-                ],
-                
-                style={
-                  "width": "100%",
-                  "height": "100%",
-                  "justify-content": "center",
-                }
-            ),
-        ],
-        
-        style={
-              "height": "calc(90% - 10px)",
-              "display": "flex",
-        }
-    )
-
-    
-], style={
-  
-  "width": "100vh",
-  "height": "100%",
-  "padding": "10px"
-})
-
-@app.callback(
-    Output(component_id='grupos', component_property='figure'),
-    [Input(component_id='my-input', component_property='value')]
-)
-def actualiza(input_value):
-    fig2 = 0
-    Freq=tabla_f[tabla_f['grupo2']==input_value]
-    fig2 = make_subplots(rows=1, cols=2)
-    fig2.add_trace(go.Bar(x=Freq['Sector'], y=Freq['conteo'], name = 'Sector'), row=1, col=2)
-    fig2.add_trace(go.Bar(x=Freq['Departamento'], y=Freq['conteo'], name = 'Departamento'), row=1, col=1)
-    fig2.update_layout(title_text="Departamento y Sector",
-                      title_font_size=30,title_x=0.5)
-    fig2.update_layout(height = 500)
-    return fig2
-
-
-app.run_server(debug=True,mode="inline",port=8056)
-
-
 # In[81]:
 
 
@@ -1073,7 +901,7 @@ def tablakpi(input_value):
     return fig5
 
 
-app.run_server(debug=True,mode="inline",port=8061)
+app.run_server(debug=True,host="0.0.0.0",port=8088)
 
 
 # In[ ]:
